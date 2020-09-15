@@ -351,7 +351,11 @@ open class CodeGenerator(
         }
     }
 
-    protected val File.Field.Numbered.Standard.hasPresence get() = (file.version == 2 && optional)
+    protected val File.Field.Numbered.Standard.hasPresence get() = when (file.version) {
+        2 -> !repeated && !map
+        3 -> !repeated && !map && type == File.Field.Type.MESSAGE
+        else -> throw IllegalArgumentException("Unknown proto version: ${file.version}")
+    }
     protected fun File.Field.Numbered.Standard.mapEntry() =
         if (!map) null else (localType as? File.Type.Message)?.takeIf { it.mapEntry }
     protected val File.Field.Numbered.Standard.localType get() = localTypeName?.let { findLocalType(it) }
@@ -375,19 +379,19 @@ open class CodeGenerator(
     protected fun File.Field.Numbered.Standard.kotlinValueType(nullableIfMessage: Boolean): String = when {
         map -> mapEntry()!!.let { "Map<${it.mapEntryKeyKotlinType}, ${it.mapEntryValueKotlinType}>" }
         repeated -> "List<$kotlinQualifiedTypeName>"
-        hasPresence || (type == File.Field.Type.MESSAGE && nullableIfMessage) ->
+        (hasPresence && !required) || (type == File.Field.Type.MESSAGE && nullableIfMessage) ->
             "$kotlinQualifiedTypeName?"
         else -> kotlinQualifiedTypeName
     }
     protected val File.Field.Numbered.Standard.defaultValue get() = when {
         map -> "emptyMap()"
         repeated -> "emptyList()"
-        hasPresence -> "null"
+        hasPresence && !required -> "null"
         type == File.Field.Type.ENUM -> "$kotlinQualifiedTypeName.fromValue(0)"
         else -> type.defaultValue
     }
     protected val File.Field.Numbered.Standard.requiresExplicitTypeWithVal get() =
-        repeated || hasPresence || type.requiresExplicitTypeWithVal
+        repeated || (hasPresence && !required) || type.requiresExplicitTypeWithVal
 
     protected val File.Field.Numbered.Wrapper.decodeWithVarDecl get() = when {
         repeated -> "var $kotlinFieldName: pbandk.ListWithSize.Builder<${wrappedType.standardTypeName}>? = null"

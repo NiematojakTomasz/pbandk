@@ -153,6 +153,7 @@ open class FileBuilder(val namer: Namer = Namer.Standard, val supportMaps: Boole
                 repeated = fieldDesc.label == FieldDescriptorProto.Label.REPEATED,
                 jsonName = fieldDesc.jsonName,
                 optional = !alwaysRequired && fieldDesc.label == FieldDescriptorProto.Label.OPTIONAL,
+                required = fieldDesc.label == FieldDescriptorProto.Label.REQUIRED,
                 packed = !type.neverPacked && (fieldDesc.options?.packed ?: (ctx.fileDesc.syntax == "proto3")),
                 map = supportMaps &&
                         fieldDesc.label == FieldDescriptorProto.Label.REPEATED &&
