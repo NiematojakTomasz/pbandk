@@ -22,7 +22,7 @@ data class MessageWithRequiredField(
                         messageDescriptor = this::descriptor,
                         name = "foo",
                         number = 1,
-                        type = pbandk.FieldDescriptor.Type.Primitive.Bool(),
+                        type = pbandk.FieldDescriptor.Type.Primitive.Bool(hasPresence = true),
                         jsonName = "foo",
                         value = MessageWithRequiredField::foo
                     )
@@ -35,6 +35,7 @@ data class MessageWithRequiredField(
 fun MessageWithRequiredField?.orDefault() = this ?: MessageWithRequiredField.defaultInstance
 
 private fun MessageWithRequiredField.protoMergeImpl(plus: pbandk.Message?): MessageWithRequiredField = (plus as? MessageWithRequiredField)?.copy(
+    foo = plus.foo ?: foo,
     unknownFields = unknownFields + plus.unknownFields
 ) ?: this
 

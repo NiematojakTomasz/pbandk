@@ -165,7 +165,7 @@ data class TestAllTypesProto3(
 ) : pbandk.Message {
     sealed class OneofField<V>(value: V) : pbandk.Message.OneOf<V>(value) {
         class OneofUint32(oneofUint32: Int = 0) : OneofField<Int>(oneofUint32)
-        class OneofNestedMessage(oneofNestedMessage: pbandk.testpb.TestAllTypesProto3.NestedMessage) : OneofField<pbandk.testpb.TestAllTypesProto3.NestedMessage>(oneofNestedMessage)
+        class OneofNestedMessage(oneofNestedMessage: pbandk.testpb.TestAllTypesProto3.NestedMessage?) : OneofField<pbandk.testpb.TestAllTypesProto3.NestedMessage?>(oneofNestedMessage)
         class OneofString(oneofString: String = "") : OneofField<String>(oneofString)
         class OneofBytes(oneofBytes: pbandk.ByteArr = pbandk.ByteArr.empty) : OneofField<pbandk.ByteArr>(oneofBytes)
         class OneofBool(oneofBool: Boolean = false) : OneofField<Boolean>(oneofBool)
@@ -177,7 +177,7 @@ data class TestAllTypesProto3(
 
     val oneofUint32: Int?
         get() = (oneofField as? OneofField.OneofUint32)?.value
-    val oneofNestedMessage: pbandk.testpb.TestAllTypesProto3.NestedMessage?
+    val oneofNestedMessage: pbandk.testpb.TestAllTypesProto3.NestedMessage??
         get() = (oneofField as? OneofField.OneofNestedMessage)?.value
     val oneofString: String?
         get() = (oneofField as? OneofField.OneofString)?.value
