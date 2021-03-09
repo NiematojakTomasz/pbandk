@@ -127,6 +127,10 @@ android {
         minSdkVersion(Versions.androidMinSdk)
         targetSdkVersion(Versions.androidTargetSdk)
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 }
 
 val extractWellKnownTypeProtos = rootProject.tasks.named<Sync>("extractWellKnownTypeProtos")

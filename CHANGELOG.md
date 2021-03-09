@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
+* **[BREAKING CHANGE]** Pbandk now requires Java 8+ when running on the JVM and Android.
+
 ### Fixed
 
 * Suppress warnings about deprecated fields used in generated code. (PR [#182], continues [#1])

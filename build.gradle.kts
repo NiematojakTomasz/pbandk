@@ -1,6 +1,8 @@
 import kotlinx.validation.ApiValidationExtension
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 // Top-level build configuration
 
@@ -75,6 +77,19 @@ val extractWellKnownTypeProtos by tasks.registering(Sync::class) {
 allprojects {
     repositories {
         mavenCentral()
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            apiVersion = "1.4"
+            languageVersion = "1.4"
+        }
+    }
+
+    tasks.withType<KotlinJvmCompile> {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
     }
 
     tasks.withType<AbstractTestTask> {
