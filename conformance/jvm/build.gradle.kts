@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm")
     application
@@ -10,10 +8,12 @@ application {
     applicationName = "conformance"
 }
 
-dependencies {
-    implementation(project(":conformance:conformance-lib"))
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+dependencies {
+    implementation(project(":conformance:conformance-lib"))
 }

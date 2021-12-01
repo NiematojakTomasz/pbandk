@@ -7,12 +7,10 @@ plugins {
 description = "Kotlin code generator for Protocol Buffers and library for writing code generator plugins."
 
 kotlin {
-    jvm {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
+    jvm()
+
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(8))
     }
 
     sourceSets {

@@ -20,6 +20,18 @@ kotlin {
 
     jvm()
 
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+    }
+
+    tasks.withType<JavaCompile> {
+        options.release.set(8)
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
     js(BOTH) {
         browser {}
         nodejs {}
